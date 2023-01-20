@@ -30,20 +30,20 @@ export function setupWebsocket(url: string, onMessage: (a: string) => unknown) {
       case 'positions':
         let editPositionEvent = event as EditPositionEvent;
         if (editPositionEvent.new_size_usd === 0) {
-          discordMessage = `*Closed Position:* ${editPositionEvent.size_delta_usd} ${direction} on ${asset} at $${editPositionEvent.price_usd} P/L: ${editPositionEvent.realized_pnl_to_date_usd}`;
+          discordMessage = `**Closed Position:** ${editPositionEvent.size_delta_usd} ${direction} on ${asset} at $${editPositionEvent.price_usd} P/L: ${editPositionEvent.realized_pnl_to_date_usd}`;
         } else {
           const prefix =
             editPositionEvent.state === ''
               ? 'New Position'
               : 'Increase Position';
           discordMessage = `
-          *${prefix}:* ${editPositionEvent.new_size_usd} ${direction} on ${asset} at $${editPositionEvent.price_usd} 
+          **${prefix}:** ${editPositionEvent.new_size_usd} ${direction} on ${asset} at $${editPositionEvent.price_usd} 
         `;
         }
         break;
       case 'liquidations':
         let liquidationEvent = event as LiquidatePositionEvent;
-        discordMessage = `*LIQUIDATED:* ${liquidationEvent.size_usd} ${direction} at ${liquidationEvent.mark_price} P/L: ${liquidationEvent.collateral}`;
+        discordMessage = `**LIQUIDATED:** ${liquidationEvent.size_usd} ${direction} at ${liquidationEvent.mark_price} P/L: ${liquidationEvent.collateral}`;
         break;
     }
     onMessage(discordMessage);
